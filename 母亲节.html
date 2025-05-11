@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>母亲节快乐 - 献给最爱的妈妈</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #ffeef8 100%);
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 40px 0;
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            color: #e83e8c;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            animation: fadeInDown 1s ease;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 30px;
+            animation: fadeIn 1.5s ease;
+        }
+        
+        .heart {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: #ff6b9d;
+            transform: rotate(45deg);
+            animation: float 3s ease-in-out infinite;
+            opacity: 0.7;
+        }
+        
+        .heart:before, .heart:after {
+            content: '';
+            width: 30px;
+            height: 30px;
+            background-color: #ff6b9d;
+            border-radius: 50%;
+            position: absolute;
+        }
+        
+        .heart:before {
+            top: -15px;
+            left: 0;
+        }
+        
+        .heart:after {
+            top: 0;
+            left: -15px;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+        
+        .blessings-container {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            margin-right: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            height: 250px;
+            background: linear-gradient(135deg, #fff9fc 0%, #fff0f5 100%);
+            border: 1px solid rgba(255, 107, 157, 0.2);
+        }
+        
+        .blessings-container:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #ff6b9d, #ff8fab, #ffb3c1);
+        }
+        
+        .blessing {
+            position: absolute;
+            width: calc(100% - 60px);
+            opacity: 0;
+            transition: opacity 1s ease, transform 1s ease;
+            transform: translateY(20px);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(255, 107, 157, 0.1);
+        }
+        
+        .blessing.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .blessing.exit {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            width: 100%;
+        }
+        
+        .btn {
+            background: linear-gradient(45deg, #ff6b9d, #ff8fab);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 157, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+        }
+        
+        .gallery {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff9fc 0%, #fff0f5 100%);
+            border: 1px solid rgba(255, 107, 157, 0.2);
+        }
+        
+        .gallery h2 {
+            color: #e83e8c;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        
+        .photo {
+            height: 150px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .photo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .photo:hover img {
+            transform: scale(1.1);
+        }
+        
+        .delete-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .photo:hover .delete-btn {
+            opacity: 1;
+        }
+        
+        .upload-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background: #f0f0f0;
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-btn:hover {
+            background: #e0e0e0;
+            border-color: #ff6b9d;
+        }
+        
+        .music-player {
+            width: 100%;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            margin-bottom: 40px;
+            text-align: center;
+            background: linear-gradient(135deg, #fff9fc 0%, #fff0f5 100%);
+            border: 1px solid rgba(255, 107, 157, 0.2);
+        }
+        
+        .music-player h2 {
+            color: #e83e8c;
+            margin-bottom: 10px;
+        }
+        
+        .song-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #555;
+            height: 1.5em;
+        }
+        
+        .player-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+        
+        .player-btn {
+            background: linear-gradient(45deg, #ff6b9d, #ff8fab);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            margin: 0 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
+        }
+        
+        .player-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(255, 107, 157, 0.4);
+        }
+        
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background: #f0f0f0;
+            border-radius: 3px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b9d, #ff8fab);
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+        
+        .time-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes float {
+            0% { transform: rotate(45deg) translateY(0px); }
+            50% { transform: rotate(45deg) translateY(-15px); }
+            100% { transform: rotate(45deg) translateY(0px); }
+        }
+        
+        @keyframes heartFloat {
+            0% {
+                transform: translateY(0) rotate(45deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(45deg);
+                opacity: 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .blessings-container {
+                margin-right: 0;
+                margin-bottom: 20px;
+                height: 280px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .controls {
+                position: static;
+                margin-top: 180px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-hearts" id="hearts-container"></div>
+    
+    <div class="container">
+        <header>
+            <h1>母亲节快乐</h1>
+            <p class="subtitle">亲爱的王小文、王雪如、王元妈妈，感谢您无私的爱与付出</p>
+            
+            <div class="heart" style="top: 10%; left: 10%;"></div>
+            <div class="heart" style="top: 20%; left: 80%; animation-delay: 0.5s;"></div>
+            <div class="heart" style="top: 70%; left: 15%; animation-delay: 1s;"></div>
+            <div class="heart" style="top: 80%; left: 70%; animation-delay: 1.5s;"></div>
+        </header>
+        
+        <div class="main-content">
+            <div class="blessings-container">
+                <h2>给妈妈的祝福</h2>
+                <div class="blessing active">
+                    <p>世界上所有的美好<br>都不及有你陪在我身边</p>
+                </div>
+                <div class="blessing">
+                    <p>愿你的岁暮不辞丰茂<br>愿你的盛开不畏霜凋</p>
+                </div>
+                <div class="blessing">
+                    <p>过去你扶我蹒跚学步<br>未来我陪你夕阳漫步</p>
+                </div>
+                <div class="blessing">
+                    <p>是谁来自山川湖海<br>却又囿于昼夜厨房与爱</p>
+                </div>
+                <div class="blessing">
+                    <p>是女儿，是妻子，是母亲</p>
+                </div>
+                <div class="blessing">
+                    <p>更是你自己<br>踏遍地球<br>难及在你身边富有</p>
+                </div>
+                <div class="blessing">
+                    <p>愿时光慢行<br>让陪伴无尽</p>
+                </div>
+                <div class="blessing">
+                    <p>你的爱如春风化雨<br>滋润我生命的每一寸土地</p>
+                </div>
+                <div class="blessing">
+                    <p>岁月不是偷走妈妈青春的小偷<br>我才是</p>
+                </div>
+                <div class="blessing">
+                    <p>感谢你不是超人<br>却为我变成了万能</p>
+                </div>
+                <div class="controls">
+                    <button class="btn" id="prev-btn">上一条</button>
+                    <button class="btn" id="next-btn">下一条</button>
+                </div>
+            </div>
+
+            <div class="gallery">
+                <h2>美好回忆</h2>
+                <div class="photo-grid" id="photo-grid">
+                    <!-- 默认展示一张示例图片 -->
+                    <div class="photo">
+                        <img src="https://img.zcool.cn/community/01e3f55d1568c4a8012187f4a0b3f0.jpg@1280w_1l_2o_100sh.jpg" alt="母亲与孩子">
+                        <button class="delete-btn">×</button>
+                    </div>
+                </div>
+                <label for="photo-upload" class="upload-btn">点击上传照片</label>
+                <input type="file" id="photo-upload" accept="image/*" multiple style="display: none;">
+            </div>
+        </div>
+        
+        <div class="music-player">
+            <h2>送给妈妈的歌</h2>
+            <div class="song-title" id="song-title">世上只有妈妈好</div>
+            <div class="progress-container" id="progress-container">
+                <div class="progress" id="progress"></div>
+            </div>
+            <div class="time-info">
+                <span id="current-time">0:00</span>
+                <span id="duration">0:00</span>
+            </div>
+            <div class="player-controls">
+                <button class="player-btn" id="play-btn">⏸</button>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2023 母亲节快乐 | 献给世界上最伟大的妈妈</p>
+            <p>点击屏幕任意处会有惊喜哦 ❤️</p>
+        </footer>
+    </div>
+    
+    <audio id="audio" autoplay loop></audio>
+    
+    <script>
+        // 祝福语轮播
+        const blessings = document.querySelectorAll('.blessing');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        let currentBlessing = 0;
+        let autoPlayInterval;
+        let isUserInteracted = false;
+        
+        function showBlessing(index, direction = 1) {
+            // 标记当前活动祝福语为退出状态
+            const currentActive = document.querySelector('.blessing.active');
+            if (currentActive) {
+                currentActive.classList.add('exit');
+                currentActive.classList.remove('active');
+            }
+            
+            // 更新当前索引
+            currentBlessing = (index + blessings.length) % blessings.length;
+            
+            // 激活新祝福语
+            blessings[currentBlessing].classList.add('active');
+            
+            // 重置自动播放计时器（如果是用户交互）
+            if (isUserInteracted) {
+                clearInterval(autoPlayInterval);
+                startAutoPlay();
+                isUserInteracted = false;
+            }
+            
+            // 移除退出状态（在动画结束后）
+            setTimeout(() => {
+                const exiting = document.querySelector('.blessing.exit');
+                if (exiting) {
+                    exiting.classList.remove('exit');
+                }
+            }, 1000);
+        }
+        
+        function nextBlessing() {
+            showBlessing(currentBlessing + 1, 1);
+        }
+        
+        function prevBlessing() {
+            showBlessing(currentBlessing - 1, -1);
+        }
+        
+        function startAutoPlay() {
+            clearInterval(autoPlayInterval); // 清除已有定时器
+            autoPlayInterval = setInterval(() => {
+                nextBlessing();
+            }, 5000);
+        }
+        
+        nextBtn.addEventListener('click', () => {
+            isUserInteracted = true;
+            nextBlessing();
+        });
+        
+        prevBtn.addEventListener('click', () => {
+            isUserInteracted = true;
+            prevBlessing();
+        });
+        
+        // 初始化显示第一条祝福语
+        showBlessing(0);
+        startAutoPlay();
+        
+        // 当窗口失去焦点时暂停自动播放，获得焦点时恢复
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                clearInterval(autoPlayInterval);
+            } else {
+                startAutoPlay();
+            }
+        });
+        
+        // 图片上传功能
+        const photoUpload = document.getElementById('photo-upload');
+        const photoGrid = document.getElementById('photo-grid');
+        
+        // 从本地存储加载照片
+        function loadSavedPhotos() {
+            const savedPhotos = localStorage.getItem('mothersDayPhotos');
+            if (savedPhotos) {
+                const photos = JSON.parse(savedPhotos);
+                photos.forEach(photoData => {
+                    addPhotoToGrid(photoData);
+                });
+            }
+        }
+        
+        // 添加照片到网格并保存
+        function addPhotoToGrid(photoData) {
+            const photoDiv = document.createElement('div');
+            photoDiv.className = 'photo';
+            
+            const img = document.createElement('img');
+            img.src = photoData;
+            img.alt = '上传的照片';
+            
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.innerHTML = '×';
+            deleteBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                photoDiv.remove();
+                savePhotosToLocalStorage();
+            });
+            
+            photoDiv.appendChild(img);
+            photoDiv.appendChild(deleteBtn);
+            photoGrid.appendChild(photoDiv);
+        }
+        
+        // 保存照片到本地存储
+        function savePhotosToLocalStorage() {
+            const photos = [];
+            document.querySelectorAll('.photo img').forEach(img => {
+                photos.push(img.src);
+            });
+            localStorage.setItem('mothersDayPhotos', JSON.stringify(photos));
+        }
+        
+        photoUpload.addEventListener('change', function(e) {
+            const files = e.target.files;
+            
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                
+                if (!file.type.match('image.*')) {
+                    continue;
+                }
+                
+                const reader = new FileReader();
+                
+                reader.onload = function(event) {
+                    addPhotoToGrid(event.target.result);
+                    savePhotosToLocalStorage();
+                };
+                
+                reader.readAsDataURL(file);
+            }
+            
+            // 重置上传按钮，允许重复上传
+            this.value = '';
+        });
+        
+        // 点击图片删除功能
+        photoGrid.addEventListener('click', function(e) {
+            if (e.target.classList.contains('delete-btn')) {
+                e.target.parentElement.remove();
+                savePhotosToLocalStorage();
+            }
+        });
+        
+        // 页面加载时从本地存储加载照片
+        loadSavedPhotos();
+        
+        // 音乐播放器功能
+        const audio = document.getElementById('audio');
+        const playBtn = document.getElementById('play-btn');
+        const progress = document.getElementById('progress');
+        const progressContainer = document.getElementById('progress-container');
+        const currentTimeEl = document.getElementById('current-time');
+        const durationEl = document.getElementById('duration');
+        const songTitleEl = document.getElementById('song-title');
+        
+        // 设置歌曲
+        audio.src = "https://music.163.com/song/media/outer/url?id=5271858.mp3";
+        audio.loop = true;
+        
+        // 播放/暂停
+        function togglePlay() {
+            if (audio.paused) {
+                audio.play();
+                playBtn.innerHTML = '⏸';
+            } else {
+                audio.pause();
+                playBtn.innerHTML = '▶';
+            }
+        }
+        
+        // 更新进度条
+        function updateProgress(e) {
+            const { duration, currentTime } = e.srcElement;
+            const progressPercent = (currentTime / duration) * 100;
+            progress.style.width = `${progressPercent}%`;
+            
+            // 更新时间显示
+            const durationMinutes = Math.floor(duration / 60);
+            let durationSeconds = Math.floor(duration % 60);
+            if (durationSeconds < 10) {
+                durationSeconds = `0${durationSeconds}`;
+            }
+            
+            if (duration) {
+                durationEl.textContent = `${durationMinutes}:${durationSeconds}`;
+            }
+            
+            const currentMinutes = Math.floor(currentTime / 60);
+            let currentSeconds = Math.floor(currentTime % 60);
+            if (currentSeconds < 10) {
+                currentSeconds = `0${currentSeconds}`;
+            }
+            currentTimeEl.textContent = `${currentMinutes}:${currentSeconds}`;
+        }
+        
+        // 设置进度条
+        function setProgress(e) {
+            const width = this.clientWidth;
+            const clickX = e.offsetX;
+            const duration = audio.duration;
+            audio.currentTime = (clickX / width) * duration;
+        }
+        
+        // 事件监听
+        playBtn.addEventListener('click', togglePlay);
+        audio.addEventListener('timeupdate', updateProgress);
+        progressContainer.addEventListener('click', setProgress);
+        audio.addEventListener('loadedmetadata', updateProgress);
+        
+        // 尝试自动播放
+        document.addEventListener('click', function() {
+            audio.play().then(() => {
+                playBtn.innerHTML = '⏸';
+            }).catch(e => {
+                console.log("需要用户交互才能播放");
+            });
+        }, { once: true });
+        
+        // 漂浮爱心
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.top = Math.random() * 100 + 'vh';
+            heart.style.opacity = Math.random();
+            heart.style.transform = `rotate(45deg) scale(${Math.random() * 0.5 + 0.5})`;
+            
+            document.getElementById('hearts-container').appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
+        
+        setInterval(createHeart, 300);
+        
+        // 点击屏幕添加爱心
+        document.addEventListener('click', (e) => {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.style.position = 'fixed';
+            heart.style.left = e.clientX + 'px';
+            heart.style.top = e.clientY + 'px';
+            heart.style.animation = 'heartFloat 3s forwards';
+            
+            document.body.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
