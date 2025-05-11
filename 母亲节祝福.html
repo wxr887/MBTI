@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>献给最爱的妈妈</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #fff0f5, #ffefe6);
+            font-family: 'Microsoft YaHei', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #e67e7e;
+            overflow: hidden;
+        }
+        
+        .header {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+            color: #e67e7e;
+        }
+        
+        .heart-container {
+            perspective: 500px;
+            margin: 30px 0;
+        }
+        
+        .heart {
+            position: relative;
+            width: 100px;
+            height: 90px;
+            transform-style: preserve-3d;
+            animation: heartbeat 1.5s infinite;
+        }
+        
+        .heart:before, .heart:after {
+            position: absolute;
+            content: "";
+            left: 50px;
+            top: 0;
+            width: 50px;
+            height: 80px;
+            background: linear-gradient(45deg, #ff0000, #ff3333);
+            border-radius: 50px 50px 0 0;
+            transform: rotate(-45deg) translateZ(10px);
+            transform-origin: 0 100%;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+        }
+        
+        .heart:after {
+            left: 0;
+            transform: rotate(45deg) translateZ(10px);
+            transform-origin: 100% 100%;
+        }
+        
+        @keyframes heartbeat {
+            0% { transform: scale(0.9) rotateX(10deg); }
+            25% { transform: scale(1.05) rotateX(0deg); }
+            50% { transform: scale(0.95) rotateX(-5deg); }
+            75% { transform: scale(1.03) rotateX(0deg); }
+            100% { transform: scale(0.9) rotateX(10deg); }
+        }
+        
+        .messages-container {
+            height: 120px;
+            width: 80%;
+            max-width: 500px;
+            position: relative;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .message {
+            position: absolute;
+            width: 100%;
+            font-size: 1.3em;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+            font-weight: 300;
+            top: 0;
+            left: 0;
+            color: #e67e7e;
+        }
+        
+        .message.active {
+            opacity: 1;
+        }
+        
+        .ending {
+            position: absolute;
+            width: 100%;
+            font-size: 1.5em;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            font-weight: 400;
+            top: 0;
+            left: 0;
+            color: #e67e7e;
+        }
+        
+        .ending.active {
+            opacity: 1;
+        }
+        
+        .footer {
+            margin-top: 50px;
+            font-size: 1.1em;
+            color: #e67e7e;
+            opacity: 0.8;
+            letter-spacing: 1px;
+        }
+        
+        .petals {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .petal {
+            position: absolute;
+            background: rgba(255, 182, 193, 0.4);
+            border-radius: 150% 0 150% 0;
+            animation: falling linear infinite;
+        }
+        
+        @keyframes falling {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">母亲节快乐</div>
+    <div class="heart-container">
+        <div class="heart"></div>
+    </div>
+    <div class="messages-container" id="messages-container">
+        <!-- 消息将通过JavaScript动态添加 -->
+    </div>
+    <div class="footer">—— 献给亲爱的王小文，王雪如，王元妈妈 ——</div>
+    
+    <div class="petals" id="petals"></div>
+
+    <script>
+        const messages = [
+            "愿您永远健康平安",
+            "希望您每天都开心快乐",
+            "不要为我们的事情烦恼",
+            "您幸福就是我们最大的心愿",
+            "感谢您无私的爱与付出",
+            "您是我们生命中最重要的人",
+            "愿您被世界温柔以待",
+            "我们永远爱您"
+        ];
+        
+        const endingMessage = "妈妈，您辛苦了";
+        
+        const container = document.getElementById('messages-container');
+        const petalsContainer = document.getElementById('petals');
+        
+        // 创建花瓣
+        function createPetals() {
+            for (let i = 0; i < 15; i++) {
+                const petal = document.createElement('div');
+                petal.className = 'petal';
+                const size = Math.random() * 15 + 5;
+                petal.style.width = `${size}px`;
+                petal.style.height = `${size}px`;
+                petal.style.left = `${Math.random() * 100}%`;
+                petal.style.top = `${Math.random() * 20 - 20}%`;
+                petal.style.opacity = Math.random() * 0.5 + 0.3;
+                petal.style.animationDuration = `${Math.random() * 10 + 10}s`;
+                petal.style.animationDelay = `${Math.random() * 5}s`;
+                petalsContainer.appendChild(petal);
+            }
+        }
+        
+        // 创建消息元素
+        messages.forEach(msg => {
+            const messageElement = document.createElement('div');
+            messageElement.className = 'message';
+            messageElement.textContent = msg;
+            container.appendChild(messageElement);
+        });
+        
+        // 创建结束语元素
+        const endingElement = document.createElement('div');
+        endingElement.className = 'ending';
+        endingElement.textContent = endingMessage;
+        container.appendChild(endingElement);
+        
+        const messageElements = document.querySelectorAll('.message');
+        let currentIndex = 0;
+        
+        function showNextMessage() {
+            if (currentIndex < messages.length) {
+                // 隐藏所有消息
+                messageElements.forEach(el => el.classList.remove('active'));
+                endingElement.classList.remove('active');
+                
+                // 显示下一条消息
+                messageElements[currentIndex].classList.add('active');
+                currentIndex++;
+                
+                // 1.8秒后切换下一条
+                setTimeout(showNextMessage, 1800);
+            } else {
+                // 显示结束语并停留
+                messageElements.forEach(el => el.classList.remove('active'));
+                endingElement.classList.add('active');
+            }
+        }
+        
+        // 初始化
+        createPetals();
+        showNextMessage();
+    </script>
+</body>
+</html>
